@@ -1,5 +1,11 @@
 class GildedRose
-  def update_quality(items)
+  attr_reader :items
+
+  def initialize(items)
+    @items = items
+  end
+
+  def update_quality
     items.each do |item|
       update_item(item)
     end

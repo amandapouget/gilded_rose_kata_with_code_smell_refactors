@@ -1,46 +1,50 @@
 def update_quality(items)
   items.each do |item|
-    if item.name != brie && item.name != backstage_pass
-      if item.quality > 0
-        if item.name != sulfuras
-          item.quality -= 1
+    update_item(item)
+  end
+end
+
+def update_item(item)
+  if item.name != brie && item.name != backstage_pass
+    if item.quality > 0
+      if item.name != sulfuras
+        item.quality -= 1
+      end
+    end
+  else
+    if item.quality < 50
+      item.quality += 1
+      if item.name == backstage_pass
+        if item.sell_in < 11
+          if item.quality < 50
+            item.quality += 1
+          end
         end
+        if item.sell_in < 6
+          if item.quality < 50
+            item.quality += 1
+          end
+        end
+      end
+    end
+  end
+  if item.name != sulfuras
+    item.sell_in -= 1
+  end
+  if item.sell_in < 0
+    if item.name != brie
+      if item.name != backstage_pass
+        if item.quality > 0
+          if item.name != sulfuras
+            item.quality -= 1
+          end
+        end
+      else
+        item.quality = item.quality - item.quality
       end
     else
       if item.quality < 50
         item.quality += 1
-        if item.name == backstage_pass
-          if item.sell_in < 11
-            if item.quality < 50
-              item.quality += 1
-            end
-          end
-          if item.sell_in < 6
-            if item.quality < 50
-              item.quality += 1
-            end
-          end
-        end
-      end
-    end
-    if item.name != sulfuras
-      item.sell_in -= 1
-    end
-    if item.sell_in < 0
-      if item.name != brie
-        if item.name != backstage_pass
-          if item.quality > 0
-            if item.name != sulfuras
-              item.quality -= 1
-            end
-          end
-        else
-          item.quality = item.quality - item.quality
-        end
-      else
-        if item.quality < 50
-          item.quality += 1
-        end
       end
     end
   end

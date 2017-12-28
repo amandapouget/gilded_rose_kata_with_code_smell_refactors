@@ -7,54 +7,53 @@ class GildedRose
 
   def update_quality
     items.each do |item|
-      update_item(item)
+      if item.name == brie
+        update_brie(item)
+      elsif item.name == backstage_pass
+        update_backstage_pass(item)
+      elsif item.name == sulfuras
+        update_sulfuras(item)
+      else
+        update_normal(item)
+      end
     end
   end
 
-  def update_item(item)
-    if item.name != brie && item.name != backstage_pass
-      if item.quality > 0
-        if item.name != sulfuras
-          item.quality -= 1
-        end
-      end
+  def update_sulfuras(item)
+  end
+
+  def update_normal(item)
+    decrement_quality = lambda { item.quality -= 1 unless item.quality == 0 }
+    if item.sell_in > 0
+      decrement_quality.call
     else
-      if item.quality < 50
-        item.quality += 1
-        if item.name == backstage_pass
-          if item.sell_in < 11
-            if item.quality < 50
-              item.quality += 1
-            end
-          end
-          if item.sell_in < 6
-            if item.quality < 50
-              item.quality += 1
-            end
-          end
-        end
-      end
+      2.times { decrement_quality.call }
     end
-    if item.name != sulfuras
-      item.sell_in -= 1
+    item.sell_in -= 1
+  end
+
+  def update_backstage_pass(item)
+    increment_quality = lambda { item.quality += 1 unless item.quality == 50 }
+    if item.sell_in <= 0
+      item.quality = 0
+    elsif item.sell_in < 6
+      3.times { increment_quality.call }
+    elsif item.sell_in < 11
+      2.times { increment_quality.call }
+    else
+      increment_quality.call
     end
-    if item.sell_in < 0
-      if item.name != brie
-        if item.name != backstage_pass
-          if item.quality > 0
-            if item.name != sulfuras
-              item.quality -= 1
-            end
-          end
-        else
-          item.quality = item.quality - item.quality
-        end
-      else
-        if item.quality < 50
-          item.quality += 1
-        end
-      end
+    item.sell_in -= 1
+  end
+
+  def update_brie(item)
+    increment_quality = lambda { item.quality += 1 unless item.quality == 50 }
+    if item.sell_in > 0
+      increment_quality.call
+    else
+      2.times { increment_quality.call }
     end
+    item.sell_in -= 1
   end
 
   def brie

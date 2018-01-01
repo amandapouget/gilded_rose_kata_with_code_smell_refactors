@@ -1,4 +1,14 @@
-# The Gilded Rose Code Kata
+# Forked Readme
+
+This is a solution inspired by Sandi Metz' talk "All the Little Things".
+It uses the classic (Code Smell list)[https://sourcemaking.com/refactoring/smells] to refactor the Gilded Rose Kata.
+The steps used here are not exactly the same as Sandi's talk but the gist is.
+
+Repo forked from Jim Weirich, who set up the Kata.
+
+Here is his original Readme:
+
+## The Gilded Rose Code Kata
 
 This is a Ruby version of the Gilded Rose Kata, found
 [here](http://iamnotmyself.com/2011/02/13/refactor-this-the-gilded-rose-kata/).

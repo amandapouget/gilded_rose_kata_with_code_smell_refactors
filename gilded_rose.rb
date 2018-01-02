@@ -1,4 +1,4 @@
-class GildedSulfuras
+class GildedItem
   attr_reader :item
 
   def initialize(item)
@@ -9,13 +9,10 @@ class GildedSulfuras
   end
 end
 
-class GildedNormalItem
-  attr_reader :item
+class GildedSulfuras < GildedItem
+end
 
-  def initialize(item)
-    @item = item
-  end
-
+class GildedNormalItem < GildedItem
   def update_quality
     decrement_quality = lambda { item.quality -= 1 unless item.quality == 0 }
     if item.sell_in > 0
@@ -27,13 +24,7 @@ class GildedNormalItem
   end
 end
 
-class GildedBackstagePass
-  attr_reader :item
-
-  def initialize(item)
-    @item = item
-  end
-
+class GildedBackstagePass < GildedItem
   def update_quality
     increment_quality = lambda { item.quality += 1 unless item.quality == 50 }
     if item.sell_in <= 0
@@ -49,13 +40,7 @@ class GildedBackstagePass
   end
 end
 
-class GildedBrie
-  attr_reader :item
-
-  def initialize(item)
-    @item = item
-  end
-
+class GildedBrie < GildedItem
   def update_quality
     increment_quality = lambda { item.quality += 1 unless item.quality == 50 }
     if item.sell_in > 0

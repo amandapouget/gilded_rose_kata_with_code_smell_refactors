@@ -56,34 +56,30 @@ class GildedRose
   attr_reader :items
 
   def initialize(items)
-    @items = items
+    @items = items.map do |item|
+      klass = klass_from_name(item.name)
+      klass.new(item)
+    end
   end
 
   def update_quality
     items.each do |item|
-      if item.name == brie
-        rose = GildedBrie.new(item)
-      elsif item.name == backstage_pass
-        rose = GildedBackstagePass.new(item)
-      elsif item.name == sulfuras
-        rose = GildedSulfuras.new(item)
-      else
-        rose = GildedNormalItem.new(item)
-      end
-      rose.update_quality
+      item.update_quality
     end
   end
 
-  def brie
-    'Aged Brie'
-  end
-
-  def backstage_pass
-    'Backstage passes to a TAFKAL80ETC concert'
-  end
-
-  def sulfuras
-    'Sulfuras, Hand of Ragnaros'
+private
+  def klass_from_name(name)
+    case name
+    when 'Aged Brie'
+      GildedBrie
+    when 'Backstage passes to a TAFKAL80ETC concert'
+      GildedBackstagePass
+    when 'Sulfuras, Hand of Ragnaros'
+      GildedSulfuras
+    else
+      GildedNormalItem
+    end
   end
 end
 

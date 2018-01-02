@@ -1,28 +1,22 @@
-class GildedRose
-  attr_reader :items
+class GildedSulfuras
+  attr_reader :item
 
-  def initialize(items)
-    @items = items
+  def initialize(item)
+    @item = item
   end
 
   def update_quality
-    items.each do |item|
-      if item.name == brie
-        update_brie(item)
-      elsif item.name == backstage_pass
-        update_backstage_pass(item)
-      elsif item.name == sulfuras
-        update_sulfuras(item)
-      else
-        update_normal(item)
-      end
-    end
+  end
+end
+
+class GildedNormalItem
+  attr_reader :item
+
+  def initialize(item)
+    @item = item
   end
 
-  def update_sulfuras(item)
-  end
-
-  def update_normal(item)
+  def update_quality
     decrement_quality = lambda { item.quality -= 1 unless item.quality == 0 }
     if item.sell_in > 0
       decrement_quality.call
@@ -31,8 +25,16 @@ class GildedRose
     end
     item.sell_in -= 1
   end
+end
 
-  def update_backstage_pass(item)
+class GildedBackstagePass
+  attr_reader :item
+
+  def initialize(item)
+    @item = item
+  end
+
+  def update_quality
     increment_quality = lambda { item.quality += 1 unless item.quality == 50 }
     if item.sell_in <= 0
       item.quality = 0
@@ -45,8 +47,16 @@ class GildedRose
     end
     item.sell_in -= 1
   end
+end
 
-  def update_brie(item)
+class GildedBrie
+  attr_reader :item
+
+  def initialize(item)
+    @item = item
+  end
+
+  def update_quality
     increment_quality = lambda { item.quality += 1 unless item.quality == 50 }
     if item.sell_in > 0
       increment_quality.call
@@ -54,6 +64,29 @@ class GildedRose
       2.times { increment_quality.call }
     end
     item.sell_in -= 1
+  end
+end
+
+class GildedRose
+  attr_reader :items
+
+  def initialize(items)
+    @items = items
+  end
+
+  def update_quality
+    items.each do |item|
+      if item.name == brie
+        rose = GildedBrie.new(item)
+      elsif item.name == backstage_pass
+        rose = GildedBackstagePass.new(item)
+      elsif item.name == sulfuras
+        rose = GildedSulfuras.new(item)
+      else
+        rose = GildedNormalItem.new(item)
+      end
+      rose.update_quality
+    end
   end
 
   def brie

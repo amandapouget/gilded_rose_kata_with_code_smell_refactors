@@ -14,41 +14,29 @@ end
 
 class GildedNormalItem < GildedItem
   def update_quality
-    decrement_quality = lambda { item.quality -= 1 unless item.quality == 0 }
-    if item.sell_in > 0
-      decrement_quality.call
-    else
-      2.times { decrement_quality.call }
-    end
     item.sell_in -= 1
+    return if item.quality == 0
+    item.quality -= 1
+    item.quality -= 1 if item.sell_in <= 0
   end
 end
 
 class GildedBackstagePass < GildedItem
   def update_quality
-    increment_quality = lambda { item.quality += 1 unless item.quality == 50 }
-    if item.sell_in <= 0
-      item.quality = 0
-    elsif item.sell_in < 6
-      3.times { increment_quality.call }
-    elsif item.sell_in < 11
-      2.times { increment_quality.call }
-    else
-      increment_quality.call
-    end
     item.sell_in -= 1
+    return if item.quality >= 50
+    return item.quality = 0 if item.sell_in < 0
+    item.quality += 1
+    item.quality += 1 if item.sell_in < 10
+    item.quality += 1 if item.sell_in < 5
   end
 end
 
 class GildedBrie < GildedItem
   def update_quality
-    increment_quality = lambda { item.quality += 1 unless item.quality == 50 }
-    if item.sell_in > 0
-      increment_quality.call
-    else
-      2.times { increment_quality.call }
-    end
     item.sell_in -= 1
+    item.quality += 1 if item.quality < 50
+    item.quality += 1 if item.quality < 50 && item.sell_in <= 0
   end
 end
 

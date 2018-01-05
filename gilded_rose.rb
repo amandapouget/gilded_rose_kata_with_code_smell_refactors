@@ -37,6 +37,15 @@ class GildedBrie < GildedItem
   end
 end
 
+class GildedConjured < GildedItem
+  def update_quality
+    item.sell_in -= 1
+    return if item.quality == 0
+    item.quality -= 2
+    item.quality -= 2 if item.sell_in <= 0
+  end
+end
+
 class GildedRose
   attr_reader :items
 
@@ -44,7 +53,8 @@ class GildedRose
   SPECIALIZED_CLASSES = {
     'Aged Brie'                                 => GildedBrie,
     'Backstage passes to a TAFKAL80ETC concert' => GildedBackstagePass,
-    'Sulfuras, Hand of Ragnaros'                => GildedItem
+    'Sulfuras, Hand of Ragnaros'                => GildedItem,
+    'Conjured Mana Cake'                        => GildedConjured
   }
 
   def initialize(items)

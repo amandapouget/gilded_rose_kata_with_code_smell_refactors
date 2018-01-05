@@ -165,7 +165,7 @@ describe "#update_quality" do
       end
     end
 
-    xcontext "conjured item" do
+    context "conjured item" do
       Given(:name) { "Conjured Mana Cake" }
 
       Invariant { item.sell_in.should == initial_sell_in-1 }

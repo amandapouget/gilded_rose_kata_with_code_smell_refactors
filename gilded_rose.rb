@@ -40,9 +40,16 @@ end
 class GildedRose
   attr_reader :items
 
+  DEFAULT_CLASS = GildedNormalItem
+  SPECIALIZED_CLASSES = {
+    'Aged Brie'                                 => GildedBrie,
+    'Backstage passes to a TAFKAL80ETC concert' => GildedBackstagePass,
+    'Sulfuras, Hand of Ragnaros'                => GildedItem
+  }
+
   def initialize(items)
     @items = items.map do |item|
-      klass = klass_from_name(item.name)
+      klass = SPECIALIZED_CLASSES[item.name] || DEFAULT_CLASS
       klass.new(item)
     end
   end
@@ -50,20 +57,6 @@ class GildedRose
   def update_quality
     items.each do |item|
       item.update_quality
-    end
-  end
-
-private
-  def klass_from_name(name)
-    case name
-    when 'Aged Brie'
-      GildedBrie
-    when 'Backstage passes to a TAFKAL80ETC concert'
-      GildedBackstagePass
-    when 'Sulfuras, Hand of Ragnaros'
-      GildedItem
-    else
-      GildedNormalItem
     end
   end
 end

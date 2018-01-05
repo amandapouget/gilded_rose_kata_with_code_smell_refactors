@@ -9,9 +9,6 @@ class GildedItem
   end
 end
 
-class GildedSulfuras < GildedItem
-end
-
 class GildedNormalItem < GildedItem
   def update_quality
     item.sell_in -= 1
@@ -64,7 +61,7 @@ private
     when 'Backstage passes to a TAFKAL80ETC concert'
       GildedBackstagePass
     when 'Sulfuras, Hand of Ragnaros'
-      GildedSulfuras
+      GildedItem
     else
       GildedNormalItem
     end
